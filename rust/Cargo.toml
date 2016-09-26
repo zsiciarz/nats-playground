@@ -1,0 +1,6 @@
+[package]
+name = "nats-playground"
+version = "0.1.0"
+authors = ["Zbigniew Siciarz <zbigniew@siciarz.net>"]
+
+[dependencies]
