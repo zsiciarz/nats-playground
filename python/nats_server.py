@@ -1,5 +1,7 @@
+import json
 import logging
 import socketserver
+import uuid
 
 
 logger = logging.getLogger(__name__)
@@ -23,7 +25,17 @@ class NatsHandler(socketserver.StreamRequestHandler):
         logger.info('Client connection closed')
 
     def info(self):
-        self.wfile.write(b'INFO {"max_payload": 1024}\r\n')
+        options = {
+            'server_id': str(uuid.uuid4()),
+            'max_payload': 1024,
+            'version': '0.0.1',
+            'host': 'localhost',
+            'port': 4222,
+            'auth_required': False,
+            'ssl_required': False,
+        }
+        serialized_options = json.dumps(options).encode('utf-8')
+        self.wfile.write(b'INFO ' + serialized_options + b'\r\n')
 
     def pong(self):
         self.wfile.write(b'PONG\r\n')
